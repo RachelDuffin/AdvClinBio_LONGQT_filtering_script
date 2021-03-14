@@ -57,14 +57,6 @@ def transcript_filter(line, select_index, clinical_index):
     else: 
         return True
 
-def tsl_filter(line, index):
-    """
-    Filter for minimum transcript support level - filters out transcripts with a value above 2 
-    """
-    tsl = re.split(r'\t+', line.rstrip('\t'))[index]
-    if float(tsl) < 3:
-        return True
-
 def get_index(df, string):
     """
     Gets the column indices for the columns that the variants will be filtered on
@@ -99,7 +91,7 @@ def main():
             outfile.write(header_line)
             # start filtering from line 2
             for line in islice(infile, 1, None):
-                if gnomAD_AF_filter(line, gnomAD_AF_index) and consequence_filter(line, consequence_index, consequence_list_to_ignore) and transcript_filter(line, MANE_SELECT_index, MANE_CLINICAL_index) and tsl_filter(line, tsl_index):
+                if gnomAD_AF_filter(line, gnomAD_AF_index) and consequence_filter(line, consequence_index, consequence_list_to_ignore) and transcript_filter(line, MANE_SELECT_index, MANE_CLINICAL_index):
                     outfile.write(line)
                 else:
                     pass
